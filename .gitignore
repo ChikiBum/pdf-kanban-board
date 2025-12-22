@@ -1,0 +1,83 @@
+# general files
+/.windsurf/
+/ai-docs/
+/patterns/
+/docs/
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# dependencies
+node_modules/
+**/node_modules/
+
+# build
+/dist
+/build
+**/dist/
+**/build/
+.next/
+out/
+
+# cache
+.cache/
+.temp/
+.tmp/
+.vercel
+.nuxt
+.nuxt-dist
+
+# logs
+logs
+*.log
+npm-debug.log*
+
+# tests
+coverage
+**/coverage
+*.lcov
+
+# IDE
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# environment
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# files
+uploads/
+**/uploads/
+
+# files for development
+.eslintcache
+
+# Biome
+.biome/
+
+# yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+tsconfig.tsbuildinfo
+
+.vscode

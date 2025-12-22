@@ -1,0 +1,37 @@
+{
+  "name": "pdf-kanban-board",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "start": "concurrently \"yarn workspace @pdf-kanban-board/backend start\" \"yarn workspace @pdf-kanban-board/frontend start\"",
+    "dev": "concurrently \"yarn workspace @pdf-kanban-board/backend dev\" \"yarn workspace @pdf-kanban-board/frontend dev\"",
+    "build": "yarn workspaces run build",
+    "build:backend": "yarn workspace @pdf-kanban-board/backend build",
+    "build:frontend": "yarn workspace @pdf-kanban-board/frontend build",
+    "test": "yarn workspaces run test",
+    "type-check": "yarn workspaces run type-check",
+    "format": "biome format --write .",
+    "lint": "biome lint .",
+    "check": "biome check .",
+    "format:check": "biome format --check .",
+    "prepare": "husky",
+    "pre-commit": "lint-staged",
+    "pre-push": "yarn lint && yarn type-check"
+  },
+  "packageManager": "yarn@3.6.3",
+  "devDependencies": {
+    "@biomejs/biome": "latest",
+    "concurrently": "^9.2.1",
+    "husky": "latest",
+    "lint-staged": "^16.2.7"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "biome check --apply"
+    ]
+  }
+}

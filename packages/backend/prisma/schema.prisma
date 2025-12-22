@@ -1,0 +1,114 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "windows"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model boards {
+  id            Int           @id @default(autoincrement())
+  org_id        Int
+  name          String        @db.VarChar(255)
+  created_at    DateTime?     @default(now()) @db.Timestamp(6)
+  organizations organizations @relation(fields: [org_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  columns       columns[]
+}
+
+model cards {
+  id          Int       @id @default(autoincrement())
+  document_id Int
+  column_id   Int
+  position    Int
+  created_at  DateTime? @default(now()) @db.Timestamp(6)
+  columns     columns   @relation(fields: [column_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  documents   documents @relation(fields: [document_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model columns {
+  id         Int       @id @default(autoincrement())
+  board_id   Int
+  name       String    @db.VarChar(100)
+  position   Int
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  cards      cards[]
+  boards     boards    @relation(fields: [board_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model comments {
+  id          Int       @id @default(autoincrement())
+  document_id Int
+  user_id     Int
+  content     String
+  created_at  DateTime? @default(now()) @db.Timestamp(6)
+  documents   documents @relation(fields: [document_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users       users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model document_versions {
+  id             Int       @id @default(autoincrement())
+  document_id    Int
+  version_number Int
+  file_path      String    @db.VarChar(500)
+  created_at     DateTime? @default(now()) @db.Timestamp(6)
+  documents      documents @relation(fields: [document_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model documents {
+  id                Int                 @id @default(autoincrement())
+  org_id            Int
+  title             String              @db.VarChar(255)
+  file_path         String              @db.VarChar(500)
+  status            String              @default("Received") @db.VarChar(50)
+  uploaded_by       Int?
+  created_at        DateTime?           @default(now()) @db.Timestamp(6)
+  updated_at        DateTime?           @default(now()) @db.Timestamp(6)
+  cards             cards[]
+  comments          comments[]
+  document_versions document_versions[]
+  organizations     organizations       @relation(fields: [org_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users             users?              @relation(fields: [uploaded_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  shares            shares[]
+}
+
+model organizations {
+  id         Int         @id @default(autoincrement())
+  name       String      @db.VarChar(255)
+  created_at DateTime?   @default(now()) @db.Timestamp(6)
+  boards     boards[]
+  documents  documents[]
+  users      users[]
+}
+
+model shares {
+  id          Int       @id @default(autoincrement())
+  document_id Int
+  shared_with Int
+  permission  String    @default("view") @db.VarChar(50)
+  created_at  DateTime? @default(now()) @db.Timestamp(6)
+  documents   documents @relation(fields: [document_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users       users     @relation(fields: [shared_with], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model signatures {
+  id         Int       @id @default(autoincrement())
+  user_id    Int
+  file_path  String    @db.VarChar(500)
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  users      users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model users {
+  id            Int           @id @default(autoincrement())
+  org_id        Int
+  email         String        @unique @db.VarChar(255)
+  full_name     String?       @db.VarChar(255)
+  created_at    DateTime?     @default(now()) @db.Timestamp(6)
+  comments      comments[]
+  documents     documents[]
+  shares        shares[]
+  signatures    signatures[]
+  organizations organizations @relation(fields: [org_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}

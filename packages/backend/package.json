@@ -1,0 +1,27 @@
+{
+  "name": "@pdf-kanban-board/backend",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@pdf-kanban-board/shared": "workspace:*",
+    "@prisma/client": "5.22.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
+    "zod": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.6",
+    "prisma": "5.22.0",
+    "ts-node-dev": "latest",
+    "typescript": "^5.3.2"
+  }
+}
