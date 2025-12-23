@@ -5,7 +5,7 @@ import { PrismaClient } from '@prisma/client';
  * щоб "скинути" налаштування Wasm-клієнта, якщо він завантажився за замовчуванням.
  */
 const prisma = new PrismaClient({
-  // @ts-ignore - це змусить клієнт використовувати бібліотеку
+  // @ts-expect-error - це змусить клієнт використовувати бібліотеку
   __internal: {
     engine: {
       type: 'library',
