@@ -1,6 +1,4 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
 echo "🔵 Running pre-commit hook..."
 yarn pre-commit
 echo "✅ pre-commit hook completed"

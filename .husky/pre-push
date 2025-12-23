@@ -1,7 +1,4 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-
 echo "🔵 Running pre-push hook..."
 yarn lint && yarn type-check
 echo "✅ pre-push hook completed"
