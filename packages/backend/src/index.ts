@@ -2,6 +2,8 @@ import cors from 'cors';
 import express from 'express';
 import 'dotenv/config';
 
+import documentRouter from './modules/document/document.routes';
+
 const app = express();
 const port = process.env.PORT || 3021;
 
@@ -12,6 +14,8 @@ app.use(
       process.env.NODE_ENV === 'production' ? process.env.CLIENT_URL : 'http://localhost:3000',
   }),
 );
+
+app.use('/api', documentRouter);
 
 app.get('/', (_req, res) => {
   res.send('Hello from PDF Kanban Board Backend!');

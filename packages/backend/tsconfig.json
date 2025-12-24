@@ -9,6 +9,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "types": ["node", "express", "multer"],
     "paths": {
       "@pdf-kanban-board/shared": ["../shared/src"]
     },
