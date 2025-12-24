@@ -16,7 +16,7 @@ import type { NextFunction, Request, Response } from 'express-serve-static-core'
 //   next();
 // };
 
-const extractTenantContextMiddleware = (req: Request, res: Response, next: NextFunction) => {
+const extractTenantContextMiddleware = (req: Request, _res: Response, next: NextFunction) => {
   req.tenantContext = {
     orgId: 1,
     userId: 1,

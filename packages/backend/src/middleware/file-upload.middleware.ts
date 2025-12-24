@@ -1,5 +1,5 @@
 import path from 'node:path';
-import type { Request } from 'express-serve-static-core';
+import type { NextFunction, Request, Response } from 'express-serve-static-core';
 import multer, { type FileFilterCallback } from 'multer';
 import { ensureDirectoryExists, storageConfig } from '../modules/storage';
 
@@ -7,14 +7,14 @@ ensureDirectoryExists(storageConfig.tempDir).catch(console.error);
 
 const storage = multer.diskStorage({
   destination: (
-    req: Request,
-    file: Express.Multer.File,
+    _req: Request,
+    _file: Express.Multer.File,
     cb: (error: Error | null, destination: string) => void,
   ) => {
     cb(null, storageConfig.tempDir);
   },
   filename: (
-    req: Request,
+    _req: Request,
     file: Express.Multer.File,
     cb: (error: Error | null, filename: string) => void,
   ) => {
@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const fileFilter = (req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
+const fileFilter = (_req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
   const allowedTypes = storageConfig.allowedMimeTypes;
   const fileExt = path.extname(file.originalname).toLowerCase();
 
@@ -48,26 +48,28 @@ export const uploadMiddleware = multer({
 });
 
 export const handleFileUploadErrors = (
-  err: any,
-  req: Request,
-  res: any,
-  next: (err?: any) => void,
+  err: unknown,
+  _req: Request,
+  res: Response,
+  next: NextFunction,
 ) => {
-  if (err instanceof multer.MulterError) {
-    if (err.code === 'LIMIT_FILE_SIZE') {
-      return res.status(400).json({
-        error: `File too large. Maximum size is ${storageConfig.maxFileSize / (1024 * 1024)}MB`,
+  if (err && err instanceof Error) {
+    if (err instanceof multer.MulterError) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(500).json({
+          error: `File too large. Maximum size is ${storageConfig.maxFileSize / (1024 * 1024)}MB`,
+        });
+      }
+      if (err.code === 'LIMIT_FILE_COUNT') {
+        return res.status(400).json({
+          error: 'Too many files. Maximum 1 file allowed',
+        });
+      }
+    } else if (err) {
+      return res.status(500).json({
+        error: err.message || 'File upload failed',
       });
     }
-    if (err.code === 'LIMIT_FILE_COUNT') {
-      return res.status(400).json({
-        error: 'Too many files. Maximum 1 file allowed',
-      });
-    }
-  } else if (err) {
-    return res.status(400).json({
-      error: err.message || 'File upload failed',
-    });
   }
   next();
 };

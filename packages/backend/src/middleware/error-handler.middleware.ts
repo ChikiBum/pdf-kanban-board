@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express-serve-static-core';
 import multer from 'multer';
 
-export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
+export function errorHandler(err: Error, _req: Request, res: Response, _next: NextFunction) {
   console.error(err.stack);
 
   if (err instanceof multer.MulterError) {
