@@ -874,7 +874,7 @@ __metadata:
   dependencies:
     "@pdf-kanban-board/shared": "workspace:*"
     "@prisma/client": 5.2.0
-    "@types/cors": ^2.8.17
+    "@types/cors": ^2.8.19
     "@types/express": ^5.0.6
     "@types/multer": ^2.0.0
     cors: ^2.8.5
@@ -1257,7 +1257,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/cors@npm:^2.8.17":
+"@types/cors@npm:^2.8.19":
   version: 2.8.19
   resolution: "@types/cors@npm:2.8.19"
   dependencies:

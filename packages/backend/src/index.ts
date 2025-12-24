@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express from 'express';
+import type { Request, Response } from 'express-serve-static-core';
 import 'dotenv/config';
 
 import documentRouter from './modules/document/document.routes';
@@ -17,11 +18,11 @@ app.use(
 
 app.use('/api', documentRouter);
 
-app.get('/', (_req, res) => {
+app.get('/', (_req: Request, res: Response) => {
   res.send('Hello from PDF Kanban Board Backend!');
 });
 
-app.get('/api/test-data', (req, res) => {
+app.get('/api/test-data', (_req: Request, res: Response) => {
   const mockData = {
     message: 'Ці дані прийшли з бекенду!',
     items: [
@@ -34,7 +35,7 @@ app.get('/api/test-data', (req, res) => {
   res.json(mockData);
 });
 
-app.all('*', (_req, res) => {
+app.all('*', (_req: Request, res: Response) => {
   res.status(404).json({ message: 'Not Found' });
 });
 

@@ -20,7 +20,7 @@
     "zod": "^3.0.0"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.17",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/multer": "^2.0.0",
     "prisma": "5.2.0",
