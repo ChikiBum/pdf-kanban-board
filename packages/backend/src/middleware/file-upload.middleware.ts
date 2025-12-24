@@ -1,8 +1,7 @@
 import path from 'node:path';
 import type { Request } from 'express';
 import multer, { type FileFilterCallback } from 'multer';
-import { storageConfig } from '../modules/storage/storage.config';
-import { ensureDirectoryExists } from '../modules/storage/storage.utils';
+import { ensureDirectoryExists, storageConfig } from '../modules/storage';
 
 // Create temp directory if it doesn't exist
 ensureDirectoryExists(storageConfig.tempDir).catch(console.error);

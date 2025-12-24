@@ -1,47 +1,32 @@
-// File: packages/backend/src/modules/document/document.service.ts
+import type {
+  CreateDocumentDto,
+  CreateDocumentVersionDto,
+  Document,
+  DocumentVersion,
+} from '@pdf-kanban-board/shared/src/types';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 export const documentService = {
-  async createDocument({
-    orgId,
-    title,
-    filePath,
-    status = 'Received',
-    uploadedBy,
-  }: {
-    orgId: number | string;
-    title: string;
-    filePath: string;
-    status?: string;
-    uploadedBy?: number;
-  }) {
+  async createDocument(data: CreateDocumentDto): Promise<Document> {
+    console.log('data', data);
     return prisma.documents.create({
       data: {
-        org_id: Number(orgId), // Convert to number here
-        title,
-        file_path: filePath,
-        status,
-        uploaded_by: uploadedBy,
+        orgId: data.orgId,
+        title: data.title,
+        filePath: data.filePath,
+        uploadedBy: data.uploadedBy,
       },
     });
   },
 
-  async createDocumentVersion({
-    documentId,
-    versionNumber,
-    filePath,
-  }: {
-    documentId: number;
-    versionNumber: number;
-    filePath: string;
-  }) {
+  async createDocumentVersion(data: CreateDocumentVersionDto): Promise<DocumentVersion> {
     return prisma.document_versions.create({
       data: {
-        document_id: documentId,
-        version_number: versionNumber,
-        file_path: filePath,
+        documentId: data.documentId,
+        versionNumber: data.versionNumber,
+        filePath: data.filePath,
       },
     });
   },
