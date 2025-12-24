@@ -1,12 +1,10 @@
 import path from 'node:path';
-import type { Request } from 'express';
+import type { Request } from 'express-serve-static-core';
 import multer, { type FileFilterCallback } from 'multer';
 import { ensureDirectoryExists, storageConfig } from '../modules/storage';
 
-// Create temp directory if it doesn't exist
 ensureDirectoryExists(storageConfig.tempDir).catch(console.error);
 
-// Configure disk storage
 const storage = multer.diskStorage({
   destination: (
     req: Request,
@@ -26,7 +24,6 @@ const storage = multer.diskStorage({
   },
 });
 
-// File type validation
 const fileFilter = (req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
   const allowedTypes = storageConfig.allowedMimeTypes;
   const fileExt = path.extname(file.originalname).toLowerCase();
@@ -41,17 +38,15 @@ const fileFilter = (req: Request, file: Express.Multer.File, cb: FileFilterCallb
   }
 };
 
-// Create multer instance
 export const uploadMiddleware = multer({
   storage,
   limits: {
-    fileSize: storageConfig.maxFileSize, // Max file size
-    files: 1, // Max number of files
+    fileSize: storageConfig.maxFileSize,
+    files: 1,
   },
   fileFilter,
 });
 
-// Error handling middleware
 export const handleFileUploadErrors = (
   err: any,
   req: Request,
@@ -59,7 +54,6 @@ export const handleFileUploadErrors = (
   next: (err?: any) => void,
 ) => {
   if (err instanceof multer.MulterError) {
-    // Multer errors (e.g., file too large, too many files)
     if (err.code === 'LIMIT_FILE_SIZE') {
       return res.status(400).json({
         error: `File too large. Maximum size is ${storageConfig.maxFileSize / (1024 * 1024)}MB`,
@@ -71,7 +65,6 @@ export const handleFileUploadErrors = (
       });
     }
   } else if (err) {
-    // Other errors (e.g., invalid file type)
     return res.status(400).json({
       error: err.message || 'File upload failed',
     });

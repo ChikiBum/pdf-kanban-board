@@ -1,4 +1,4 @@
-import type { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express-serve-static-core';
 
 // const extractTenantContextMiddleware = (req: Request, res: Response, next: NextFunction) => {
 //   const orgId = req.cookies.org_id;

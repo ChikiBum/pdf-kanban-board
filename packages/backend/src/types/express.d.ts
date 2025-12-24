@@ -1,5 +1,4 @@
-// biome-ignore lint/correctness/noUnusedImports: Needed for global type augmentation
-import type { Request } from 'express';
+import type { Request } from 'express-serve-static-core';
 
 declare global {
   namespace Express {

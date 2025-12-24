@@ -1,4 +1,4 @@
-import type { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express-serve-static-core';
 import multer from 'multer';
 
 export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {

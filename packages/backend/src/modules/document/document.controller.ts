@@ -1,7 +1,4 @@
-// packages/backend/src/modules/document/document.controller.ts
-
 import type { CreateDocumentDto } from '@pdf-kanban-board/shared/src/types';
-// import type { RequestHandler } from 'express';
 import type { RequestHandler } from 'express-serve-static-core';
 import { documentService } from './document.service';
 

@@ -1,4 +1,3 @@
-// File: packages/backend/src/modules/storage/FileStorageService.ts
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { storageConfig } from './storage.config';
@@ -17,7 +16,6 @@ export async function uploadFile(
     maxFileSize = config.maxFileSize,
   } = options;
 
-  // If file.buffer is not available (e.g., using diskStorage), read from file.path
   if (!file.buffer) {
     if (file.path) {
       file.buffer = await fs.readFile(file.path);
@@ -47,10 +45,8 @@ export async function uploadFile(
   };
 }
 
-// Export as a service object
 export const storageService = {
   uploadFile,
 };
 
-// For backward compatibility
 export default storageService;

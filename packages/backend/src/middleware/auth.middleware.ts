@@ -1,4 +1,4 @@
-import type { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express-serve-static-core';
 
 export const authMiddleware = (req: Request, res: Response, _next: NextFunction) => {
   const token = req.headers.authorization?.split(' ')[1];
