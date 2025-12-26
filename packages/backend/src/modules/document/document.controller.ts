@@ -2,7 +2,7 @@ import type { CreateDocumentDto } from '@pdf-kanban-board/shared/src/types';
 import { createHash } from 'crypto';
 import type { RequestHandler } from 'express-serve-static-core';
 import { storeFile } from '../storage/fileStorage.service';
-import { createDocument, createDocumentVersion } from './document.service';
+import { createDocument, createDocumentVersion, getAllDocuments } from './document.service';
 
 const uploadDocument: RequestHandler = async (req, res, next) => {
   console.log('uploadDocument body', req.body);
@@ -38,7 +38,7 @@ const uploadDocument: RequestHandler = async (req, res, next) => {
   }
 };
 
-const getAllDocuments: RequestHandler = async (_req, res, next) => {
+const getAllDocumentsDo: RequestHandler = async (_req, res, next) => {
   try {
     const documents = await getAllDocuments();
     res.status(200).json(documents);
@@ -47,4 +47,4 @@ const getAllDocuments: RequestHandler = async (_req, res, next) => {
   }
 };
 
-export { uploadDocument, getAllDocuments };
+export { uploadDocument, getAllDocumentsDo };
