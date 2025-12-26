@@ -2,7 +2,13 @@ import type { CreateDocumentDto } from '@pdf-kanban-board/shared/src/types';
 import { createHash } from 'crypto';
 import type { RequestHandler } from 'express-serve-static-core';
 import { storeFile } from '../storage';
-import { createDocument, createDocumentVersion, getAllDocuments } from './document.service';
+import {
+  createDocumentService,
+  createDocumentVersionService,
+  deleteDocumentByIdService,
+  getAllDocumentsService,
+  getDocumentByIdService,
+} from './document.service';
 
 const uploadDocument: RequestHandler = async (req, res, next) => {
   console.log('uploadDocument body', req.body);
@@ -11,7 +17,9 @@ const uploadDocument: RequestHandler = async (req, res, next) => {
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const uploadedFile = await storeFile(req.file);
+    const uploadedFile = await storeFile(req.file, {
+      orgId: req.tenantContext?.orgId,
+    });
 
     const contentHash = createHash('sha256').update(req.file.buffer).digest('hex');
 
@@ -24,9 +32,9 @@ const uploadDocument: RequestHandler = async (req, res, next) => {
       contentHash: contentHash,
     };
 
-    const document = await createDocument(data);
+    const document = await createDocumentService(data);
 
-    await createDocumentVersion({
+    await createDocumentVersionService({
       documentId: document.id,
       versionNumber: 1,
       filePath: uploadedFile.path,
@@ -38,13 +46,32 @@ const uploadDocument: RequestHandler = async (req, res, next) => {
   }
 };
 
-const getAllDocumentsDo: RequestHandler = async (_req, res, next) => {
+const getDocuments: RequestHandler = async (_req, res, next) => {
   try {
-    const documents = await getAllDocuments();
+    const documents = await getAllDocumentsService();
     res.status(200).json(documents);
   } catch (error) {
     next(error);
   }
 };
 
-export { uploadDocument, getAllDocumentsDo };
+const getDocumentById: RequestHandler = async (req, res, next) => {
+  try {
+    const document = await getDocumentByIdService(parseInt(req.params.id, 10));
+    res.status(200).json(document);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteDocumentById: RequestHandler = async (req, res, next) => {
+  try {
+    const documentId = parseInt(req.params.id, 10);
+    await deleteDocumentByIdService(documentId);
+    res.status(200).json({ message: `Document ${documentId} deleted` });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { uploadDocument, getDocuments, getDocumentById, deleteDocumentById };

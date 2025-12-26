@@ -1,11 +1,23 @@
 import { Router } from 'express';
 import { extractTenantContextMiddleware, uploadMiddleware } from '../../middleware';
-import { getAllDocumentsDo, uploadDocument } from './document.controller';
+import {
+  deleteDocumentById,
+  getDocumentById,
+  getDocuments,
+  uploadDocument,
+} from './document.controller';
 
-const router = Router();
+const documentRouter = Router();
 
-router.post('/', extractTenantContextMiddleware, uploadMiddleware.single('file'), uploadDocument);
+documentRouter.post(
+  '/',
+  extractTenantContextMiddleware,
+  uploadMiddleware.single('file'),
+  uploadDocument,
+);
 
-router.get('/:id', extractTenantContextMiddleware, getAllDocumentsDo);
+documentRouter.get('/all', extractTenantContextMiddleware, getDocuments);
+documentRouter.get('/:id', extractTenantContextMiddleware, getDocumentById);
+documentRouter.post('/:id', extractTenantContextMiddleware, deleteDocumentById);
 
-export default router;
+export default documentRouter;

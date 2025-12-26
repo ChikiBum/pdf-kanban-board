@@ -9,7 +9,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-const createDocument = async (data: CreateDocumentDto): Promise<Document> => {
+const createDocumentService = async (data: CreateDocumentDto): Promise<Document> => {
   console.log('data', data);
   const existingDocument = await prisma.documents.findFirst({
     where: {
@@ -45,7 +45,9 @@ const createDocument = async (data: CreateDocumentDto): Promise<Document> => {
   });
 };
 
-const createDocumentVersion = async (data: CreateDocumentVersionDto): Promise<DocumentVersion> => {
+const createDocumentVersionService = async (
+  data: CreateDocumentVersionDto,
+): Promise<DocumentVersion> => {
   return prisma.document_versions.create({
     data: {
       documentId: data.documentId,
@@ -55,8 +57,26 @@ const createDocumentVersion = async (data: CreateDocumentVersionDto): Promise<Do
   });
 };
 
-const getAllDocuments = async (): Promise<Document[]> => {
+const getAllDocumentsService = async (): Promise<Document[]> => {
   return prisma.documents.findMany();
 };
 
-export { createDocument, createDocumentVersion, getAllDocuments };
+const getDocumentByIdService = async (id: number): Promise<Document | null> => {
+  return prisma.documents.findUnique({
+    where: { id },
+  });
+};
+
+const deleteDocumentByIdService = async (id: number): Promise<void> => {
+  await prisma.documents.delete({
+    where: { id },
+  });
+};
+
+export {
+  createDocumentService,
+  createDocumentVersionService,
+  getAllDocumentsService,
+  getDocumentByIdService,
+  deleteDocumentByIdService,
+};
