@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "concurrently \"yarn workspace @pdf-kanban-board/backend start\" \"yarn workspace @pdf-kanban-board/frontend start\"",
-    "dev": "concurrently \"yarn workspace @pdf-kanban-board/backend dev\" \"yarn workspace @pdf-kanban-board/frontend dev\"",
+    "dev": "concurrently \"yarn workspace @pdf-kanban-board/backend prisma generate && yarn workspace @pdf-kanban-board/backend dev\" \"yarn workspace @pdf-kanban-board/frontend dev\"",
     "build": "yarn workspaces run build",
     "build:backend": "yarn workspace @pdf-kanban-board/backend build",
     "build:frontend": "yarn workspace @pdf-kanban-board/frontend build",

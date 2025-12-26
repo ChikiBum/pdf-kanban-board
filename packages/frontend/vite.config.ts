@@ -1,9 +1,12 @@
+import { fileURLToPath } from 'node:url';
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
+import { defineConfig, type UserConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
-  plugins: [react(), tsconfigPaths()],
+  base: '/',
+  plugins: [react(), tsconfigPaths(), tailwindcss()],
   server: {
     port: 3000,
     open: true,
@@ -11,12 +14,26 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:3001',
         changeOrigin: true,
-        secure: false,
+        secure: process.env.NODE_ENV === 'production',
       },
     },
   },
   build: {
     outDir: 'build',
-    sourcemap: true,
+    sourcemap: process.env.NODE_ENV !== 'production',
   },
-});
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'es2020',
+    },
+  },
+  define: {
+    'process.env': {},
+  },
+  publicDir: 'public',
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
+}) satisfies UserConfig;

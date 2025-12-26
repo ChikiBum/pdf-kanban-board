@@ -4,37 +4,34 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "postinstall": "vite build",
     "dev": "vite",
     "start": "vite preview --port 3000",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "biome check --config-path ../../biome.json src/",
+    "format": "biome format --config-path ../../biome.json src/",
+    "format:write": "biome format --write --config-path ../../biome.json src/",
+    "format:check": "biome check --apply-unsafe --config-path ../../biome.json src/"
   },
   "dependencies": {
     "@pdf-kanban-board/shared": "workspace:*",
     "@reduxjs/toolkit": "^2.0.1",
+    "@tanstack/react-query": "^5.90.12",
+    "@tanstack/react-router": "^1.143.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^9.0.4",
-    "react-router-dom": "^6.20.1",
-    "zod": "^3.0.0"
+    "react-redux": "^9.0.4"
   },
   "devDependencies": {
-    "@types/node": "^25.0.3",
+    "@biomejs/biome": "2.3.10",
+    "@tailwindcss/vite": "^4.1.18",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "@typescript-eslint/eslint-plugin": "^6.13.2",
-    "@typescript-eslint/parser": "^6.13.2",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.16",
-    "esbuild": "0.27.2",
-    "eslint": "^8.54.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.4",
     "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.5",
+    "tailwindcss": "^4.1.18",
     "typescript": "^5.3.2",
     "vite": "^5.0.0",
     "vite-tsconfig-paths": "^4.2.2"
