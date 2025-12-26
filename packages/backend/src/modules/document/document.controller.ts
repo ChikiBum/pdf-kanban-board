@@ -38,7 +38,7 @@ const uploadDocument: RequestHandler = async (req, res, next) => {
   }
 };
 
-const getAllDocuments: RequestHandler = async (req, res, next) => {
+const getAllDocuments: RequestHandler = async (_req, res, next) => {
   try {
     const documents = await getAllDocuments();
     res.status(200).json(documents);
