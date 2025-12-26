@@ -1,7 +1,7 @@
 import type { CreateDocumentDto } from '@pdf-kanban-board/shared/src/types';
 import { createHash } from 'crypto';
 import type { RequestHandler } from 'express-serve-static-core';
-import { storeFile } from '../storage/fileStorage.service';
+import { storeFile } from '../storage';
 import { createDocument, createDocumentVersion, getAllDocuments } from './document.service';
 
 const uploadDocument: RequestHandler = async (req, res, next) => {
