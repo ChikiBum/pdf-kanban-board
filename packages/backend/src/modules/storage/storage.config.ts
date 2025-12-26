@@ -10,12 +10,6 @@ export const storageConfig: StorageConfig = {
   uploadDir: path.join(process.cwd(), uploadDir),
   tempDir: path.join(process.cwd(), uploadDir, 'temp'),
   maxFileSize,
-  allowedMimeTypes: [
-    'application/pdf',
-    'image/jpeg',
-    'image/png',
-    'application/msword',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  ],
+  allowedMimeTypes: ['application/pdf', 'image/jpeg', 'image/png'],
   baseUrl: `/${uploadDir}`,
 };

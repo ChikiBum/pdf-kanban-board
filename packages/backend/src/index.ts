@@ -2,7 +2,7 @@ import cors from 'cors';
 import express from 'express';
 import type { Request, Response } from 'express-serve-static-core';
 import 'dotenv/config';
-
+import errorHandler from './middleware/errorHandler.middleware';
 import documentRouter from './modules/document/document.routes';
 
 const app = express();
@@ -16,7 +16,7 @@ app.use(
   }),
 );
 
-app.use('/api', documentRouter);
+app.use('/api/documents', documentRouter);
 
 app.get('/', (_req: Request, res: Response) => {
   res.send('Hello from PDF Kanban Board Backend!');
@@ -38,6 +38,8 @@ app.get('/api/test-data', (_req: Request, res: Response) => {
 app.all('*', (_req: Request, res: Response) => {
   res.status(404).json({ message: 'Not Found' });
 });
+
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Backender Server is running on http://localhost:${port}`);

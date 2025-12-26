@@ -1,15 +1,11 @@
 import { Router } from 'express';
-import extractTenantContextMiddleware from '../../middleware/checkOrgId.middleware';
-import { uploadMiddleware } from '../../middleware/file-upload.middleware';
-import { uploadDocument } from './document.controller';
+import { extractTenantContextMiddleware, uploadMiddleware } from '../../middleware';
+import { getAllDocuments, uploadDocument } from './document.controller';
 
 const router = Router();
 
-router.post(
-  '/documents',
-  extractTenantContextMiddleware,
-  uploadMiddleware.single('file'),
-  uploadDocument,
-);
+router.post('/', extractTenantContextMiddleware, uploadMiddleware.single('file'), uploadDocument);
+
+router.get('/:id', extractTenantContextMiddleware, getAllDocuments);
 
 export default router;
