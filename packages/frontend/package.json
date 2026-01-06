@@ -16,22 +16,30 @@
   },
   "dependencies": {
     "@pdf-kanban-board/shared": "workspace:*",
+    "@radix-ui/react-slot": "^1.2.4",
     "@reduxjs/toolkit": "^2.0.1",
     "@tanstack/react-query": "^5.90.12",
     "@tanstack/react-router": "^1.143.11",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.562.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^9.0.4"
+    "react-redux": "^9.0.4",
+    "tailwind-merge": "^3.4.0",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.10",
     "@tailwindcss/vite": "^4.1.18",
+    "@types/node": "^25.0.3",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
     "tailwindcss": "^4.1.18",
+    "tw-animate-css": "^1.4.0",
     "typescript": "^5.3.2",
     "vite": "^5.0.0",
     "vite-tsconfig-paths": "^4.2.2"
