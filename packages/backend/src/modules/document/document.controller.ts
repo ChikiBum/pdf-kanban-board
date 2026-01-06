@@ -1,10 +1,6 @@
-// import type { CreateDocumentDto } from '@pdf-kanban-board/shared/src/types';
-// import { createHash } from 'crypto';
 import type { RequestHandler } from 'express-serve-static-core';
-// import { storeFile } from '../storage';
 import {
   createDocumentService,
-  createDocumentVersionService,
   deleteDocumentByIdService,
   getAllDocumentsService,
   getDocumentByIdService,
