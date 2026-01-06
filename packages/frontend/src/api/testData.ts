@@ -8,7 +8,6 @@ interface TestData {
   timestamp: string;
 }
 
-// Функція для завантаження даних
 async function fetchTestData(): Promise<TestData> {
   const response = await fetch('/api/test-data');
   if (!response.ok) {
@@ -17,7 +16,6 @@ async function fetchTestData(): Promise<TestData> {
   return response.json();
 }
 
-// Функція-обгортка для використання з Suspense
 function wrapPromise<T>(promise: Promise<T>) {
   let status = 'pending';
   let result: T | Error;
@@ -46,7 +44,6 @@ function wrapPromise<T>(promise: Promise<T>) {
   };
 }
 
-// Створюємо ресурс для Suspense
 export function getTestData() {
   return wrapPromise(fetchTestData());
 }

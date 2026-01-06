@@ -11,7 +11,6 @@ import {
 } from './document.service';
 
 const uploadDocument: RequestHandler = async (req, res, next) => {
-  console.log('uploadDocument body', req.body);
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });

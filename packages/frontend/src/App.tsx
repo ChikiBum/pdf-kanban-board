@@ -4,10 +4,8 @@ import { getTestData } from './api/testData';
 import { Activity } from './components/Activity';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
-// Отримуємо дані для Suspense
 const testData = getTestData();
 
-// Компонент для відображення даних
 function TestDataDisplay() {
   const data = testData.read();
 
@@ -39,12 +37,10 @@ function TestDataDisplay() {
   );
 }
 
-// Компонент завантаження
 function LoadingSpinner() {
   return <p className="text-gray-500">Завантаження даних...</p>;
 }
 
-// Компонент помилки
 function ErrorFallback({ error }: { error: Error }) {
   return <p className="text-red-500">Помилка: {error.message}</p>;
 }
