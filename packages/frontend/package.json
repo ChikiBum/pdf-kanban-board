@@ -15,6 +15,7 @@
     "format:check": "biome check --apply-unsafe --config-path ../../biome.json src/"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
     "@pdf-kanban-board/shared": "workspace:*",
     "@radix-ui/react-slot": "^1.2.4",
     "@reduxjs/toolkit": "^2.0.1",

@@ -1,6 +1,6 @@
 import { createLazyFileRoute, Link } from '@tanstack/react-router';
 
-export const Route = createLazyFileRoute('/todo/')({
+export const Route = createLazyFileRoute('/todoExample/')({
   component: ToDoItem,
 });
 

@@ -13,10 +13,11 @@ import { createFileRoute } from '@tanstack/react-router';
 import { Route as rootRouteImport } from './routes/__root';
 import { Route as AboutNotLazyRouteImport } from './routes/aboutNotLazy';
 import { Route as IndexRouteImport } from './routes/index';
-import { Route as TodoTodoidRouteImport } from './routes/todo/$todoid';
+import { Route as TodoExampleTodoidRouteImport } from './routes/todoExample/$todoid';
 
 const AboutLazyRouteImport = createFileRoute('/about')();
-const TodoIndexLazyRouteImport = createFileRoute('/todo/')();
+const TodoExampleIndexLazyRouteImport = createFileRoute('/todoExample/')();
+const BoardExampleIndexLazyRouteImport = createFileRoute('/boardExample/')();
 
 const AboutLazyRoute = AboutLazyRouteImport.update({
   id: '/about',
@@ -33,14 +34,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any);
-const TodoIndexLazyRoute = TodoIndexLazyRouteImport.update({
-  id: '/todo/',
-  path: '/todo/',
+const TodoExampleIndexLazyRoute = TodoExampleIndexLazyRouteImport.update({
+  id: '/todoExample/',
+  path: '/todoExample/',
   getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/todo/index.lazy').then((d) => d.Route));
-const TodoTodoidRoute = TodoTodoidRouteImport.update({
-  id: '/todo/$todoid',
-  path: '/todo/$todoid',
+} as any).lazy(() => import('./routes/todoExample/index.lazy').then((d) => d.Route));
+const BoardExampleIndexLazyRoute = BoardExampleIndexLazyRouteImport.update({
+  id: '/boardExample/',
+  path: '/boardExample/',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/boardExample/index.lazy').then((d) => d.Route));
+const TodoExampleTodoidRoute = TodoExampleTodoidRouteImport.update({
+  id: '/todoExample/$todoid',
+  path: '/todoExample/$todoid',
   getParentRoute: () => rootRouteImport,
 } as any);
 
@@ -48,38 +54,55 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute;
   '/aboutNotLazy': typeof AboutNotLazyRoute;
   '/about': typeof AboutLazyRoute;
-  '/todo/$todoid': typeof TodoTodoidRoute;
-  '/todo': typeof TodoIndexLazyRoute;
+  '/todoExample/$todoid': typeof TodoExampleTodoidRoute;
+  '/boardExample': typeof BoardExampleIndexLazyRoute;
+  '/todoExample': typeof TodoExampleIndexLazyRoute;
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute;
   '/aboutNotLazy': typeof AboutNotLazyRoute;
   '/about': typeof AboutLazyRoute;
-  '/todo/$todoid': typeof TodoTodoidRoute;
-  '/todo': typeof TodoIndexLazyRoute;
+  '/todoExample/$todoid': typeof TodoExampleTodoidRoute;
+  '/boardExample': typeof BoardExampleIndexLazyRoute;
+  '/todoExample': typeof TodoExampleIndexLazyRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
   '/': typeof IndexRoute;
   '/aboutNotLazy': typeof AboutNotLazyRoute;
   '/about': typeof AboutLazyRoute;
-  '/todo/$todoid': typeof TodoTodoidRoute;
-  '/todo/': typeof TodoIndexLazyRoute;
+  '/todoExample/$todoid': typeof TodoExampleTodoidRoute;
+  '/boardExample/': typeof BoardExampleIndexLazyRoute;
+  '/todoExample/': typeof TodoExampleIndexLazyRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: '/' | '/aboutNotLazy' | '/about' | '/todo/$todoid' | '/todo';
+  fullPaths:
+    | '/'
+    | '/aboutNotLazy'
+    | '/about'
+    | '/todoExample/$todoid'
+    | '/boardExample'
+    | '/todoExample';
   fileRoutesByTo: FileRoutesByTo;
-  to: '/' | '/aboutNotLazy' | '/about' | '/todo/$todoid' | '/todo';
-  id: '__root__' | '/' | '/aboutNotLazy' | '/about' | '/todo/$todoid' | '/todo/';
+  to: '/' | '/aboutNotLazy' | '/about' | '/todoExample/$todoid' | '/boardExample' | '/todoExample';
+  id:
+    | '__root__'
+    | '/'
+    | '/aboutNotLazy'
+    | '/about'
+    | '/todoExample/$todoid'
+    | '/boardExample/'
+    | '/todoExample/';
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
   AboutNotLazyRoute: typeof AboutNotLazyRoute;
   AboutLazyRoute: typeof AboutLazyRoute;
-  TodoTodoidRoute: typeof TodoTodoidRoute;
-  TodoIndexLazyRoute: typeof TodoIndexLazyRoute;
+  TodoExampleTodoidRoute: typeof TodoExampleTodoidRoute;
+  BoardExampleIndexLazyRoute: typeof BoardExampleIndexLazyRoute;
+  TodoExampleIndexLazyRoute: typeof TodoExampleIndexLazyRoute;
 }
 
 declare module '@tanstack/react-router' {
@@ -105,18 +128,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
-    '/todo/': {
-      id: '/todo/';
-      path: '/todo';
-      fullPath: '/todo';
-      preLoaderRoute: typeof TodoIndexLazyRouteImport;
+    '/todoExample/': {
+      id: '/todoExample/';
+      path: '/todoExample';
+      fullPath: '/todoExample';
+      preLoaderRoute: typeof TodoExampleIndexLazyRouteImport;
       parentRoute: typeof rootRouteImport;
     };
-    '/todo/$todoid': {
-      id: '/todo/$todoid';
-      path: '/todo/$todoid';
-      fullPath: '/todo/$todoid';
-      preLoaderRoute: typeof TodoTodoidRouteImport;
+    '/boardExample/': {
+      id: '/boardExample/';
+      path: '/boardExample';
+      fullPath: '/boardExample';
+      preLoaderRoute: typeof BoardExampleIndexLazyRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    '/todoExample/$todoid': {
+      id: '/todoExample/$todoid';
+      path: '/todoExample/$todoid';
+      fullPath: '/todoExample/$todoid';
+      preLoaderRoute: typeof TodoExampleTodoidRouteImport;
       parentRoute: typeof rootRouteImport;
     };
   }
@@ -126,8 +156,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutNotLazyRoute: AboutNotLazyRoute,
   AboutLazyRoute: AboutLazyRoute,
-  TodoTodoidRoute: TodoTodoidRoute,
-  TodoIndexLazyRoute: TodoIndexLazyRoute,
+  TodoExampleTodoidRoute: TodoExampleTodoidRoute,
+  BoardExampleIndexLazyRoute: BoardExampleIndexLazyRoute,
+  TodoExampleIndexLazyRoute: TodoExampleIndexLazyRoute,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
