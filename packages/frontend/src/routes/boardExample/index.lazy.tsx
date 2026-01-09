@@ -60,7 +60,7 @@ function RouteComponent() {
   console.log('tasks: ', tasks);
 
   return (
-    <div className="p-4">
+    <div className="p-4 ">
       <div className="flex gap-4">
         <DndContext onDragEnd={handleDragEnd}>
           {COLUMNS.map((column) => (
