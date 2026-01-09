@@ -46,7 +46,7 @@ function RouteComponent() {
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    console.log(active, over);
+
     if (!over) return;
 
     const taskId = active.id as string;

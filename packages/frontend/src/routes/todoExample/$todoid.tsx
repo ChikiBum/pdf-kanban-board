@@ -6,6 +6,7 @@ type PageParams = {
 
 const getToDo = async (id: string): Promise<{ title: string }> => {
   const data = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`);
+  console.log('data: ', data);
   // const todo = await data.json();
   // throw new Error('Something went wrong!');
   return data.json();

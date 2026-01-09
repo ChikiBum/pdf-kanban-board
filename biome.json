@@ -21,7 +21,18 @@
       "recommended": true,
       "suspicious": {
         "noExplicitAny": "warn"
+      },
+      "correctness": {
+        "noInvalidPositionAtImportRule": "off"
       }
+    }
+  },
+  "css": {
+    "parser": {
+      "allowWrongLineComments": true
+    },
+    "linter": {
+      "enabled": false
     }
   },
   "javascript": {
