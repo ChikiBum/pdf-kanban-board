@@ -13,13 +13,17 @@
     "@pdf-kanban-board/shared": "workspace:*",
     "@prisma/client": "5.2.0",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^17.2.3",
     "express": "^4.18.2",
+    "multer": "^2.0.2",
+    "uuid": "^13.0.0",
     "zod": "^3.0.0"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.17",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/multer": "^2.0.0",
     "prisma": "5.2.0",
     "ts-node-dev": "latest",
     "typescript": "^5.3.2"

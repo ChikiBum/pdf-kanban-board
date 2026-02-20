@@ -1,4 +1,11 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+echo "🔵 Running pre-push hook..."
 
-yarn lint && yarn type-check
+yarn pre-push
+
+if [ $? -ne 0 ]; then
+  echo "❌ Pre-push checks failed. Please fix the errors before pushing."
+  exit 1
+fi
+
+echo "✅ pre-push hook completed"

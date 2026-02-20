@@ -79,5 +79,6 @@ uploads/
 .pnp.*
 
 tsconfig.tsbuildinfo
+**/tsconfig.tsbuildinfo
 
 .vscode
