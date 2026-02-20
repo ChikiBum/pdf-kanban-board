@@ -6,15 +6,35 @@ import type {
   DocumentVersion,
 } from '@pdf-kanban-board/shared/src/types';
 import { PrismaClient } from '@prisma/client';
+import { createHash } from 'crypto';
+import { storeFile } from '../storage';
 
 const prisma = new PrismaClient();
 
-const createDocumentService = async (data: CreateDocumentDto): Promise<Document> => {
-  console.log('data', data);
+const createDocumentService = async (params: {
+  file: Express.Multer.File;
+  title: string;
+  orgId: string;
+  userId?: number;
+}): Promise<Document> => {
+  const orgId = parseInt(params.orgId, 10);
+  const uploadedFile = await storeFile(params.file, { orgId });
+
+  const contentHash = createHash('sha256').update(params.file.buffer).digest('hex');
+
+  const data: CreateDocumentDto = {
+    title: params.title,
+    filePath: uploadedFile.path,
+    orgId,
+    uploadedBy: params.userId ?? null,
+    originalName: uploadedFile.originalName,
+    contentHash,
+  };
+
   const existingDocument = await prisma.documents.findFirst({
     where: {
-      orgId: data.orgId,
-      contentHash: data.contentHash,
+      orgId,
+      contentHash,
       uploadedBy: data.uploadedBy,
     },
   });
@@ -35,7 +55,7 @@ const createDocumentService = async (data: CreateDocumentDto): Promise<Document>
 
   return prisma.documents.create({
     data: {
-      orgId: data.orgId,
+      orgId,
       title: data.title,
       filePath: data.filePath,
       uploadedBy: data.uploadedBy,

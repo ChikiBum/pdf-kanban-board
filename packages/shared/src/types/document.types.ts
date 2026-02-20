@@ -8,7 +8,7 @@ const DocumentSchema = z.object({
   id: z.number().int().positive(),
   title: z.string().min(1, 'Title is required'),
   status: DocumentStatus,
-  orgId: z.number().int().positive(),
+  orgId: z.number().int().positive().optional(),
   filePath: z.string().min(1, 'File path is required'),
   uploadedBy: z.number().nullable(),
   originalName: z.string().min(1, 'Original name is required'),
