@@ -17,6 +17,9 @@ import { Route as TodoExampleTodoidRouteImport } from './routes/todoExample/$tod
 
 const AboutLazyRouteImport = createFileRoute('/about')()
 const TodoExampleIndexLazyRouteImport = createFileRoute('/todoExample/')()
+const BoardExampleWithoutLibraryIndexLazyRouteImport = createFileRoute(
+  '/boardExampleWithoutLibrary/',
+)()
 const BoardExampleIndexLazyRouteImport = createFileRoute('/boardExample/')()
 
 const AboutLazyRoute = AboutLazyRouteImport.update({
@@ -41,6 +44,16 @@ const TodoExampleIndexLazyRoute = TodoExampleIndexLazyRouteImport.update({
 } as any).lazy(() =>
   import('./routes/todoExample/index.lazy').then((d) => d.Route),
 )
+const BoardExampleWithoutLibraryIndexLazyRoute =
+  BoardExampleWithoutLibraryIndexLazyRouteImport.update({
+    id: '/boardExampleWithoutLibrary/',
+    path: '/boardExampleWithoutLibrary/',
+    getParentRoute: () => rootRouteImport,
+  } as any).lazy(() =>
+    import('./routes/boardExampleWithoutLibrary/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 const BoardExampleIndexLazyRoute = BoardExampleIndexLazyRouteImport.update({
   id: '/boardExample/',
   path: '/boardExample/',
@@ -60,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutLazyRoute
   '/todoExample/$todoid': typeof TodoExampleTodoidRoute
   '/boardExample': typeof BoardExampleIndexLazyRoute
+  '/boardExampleWithoutLibrary': typeof BoardExampleWithoutLibraryIndexLazyRoute
   '/todoExample': typeof TodoExampleIndexLazyRoute
 }
 export interface FileRoutesByTo {
@@ -68,6 +82,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutLazyRoute
   '/todoExample/$todoid': typeof TodoExampleTodoidRoute
   '/boardExample': typeof BoardExampleIndexLazyRoute
+  '/boardExampleWithoutLibrary': typeof BoardExampleWithoutLibraryIndexLazyRoute
   '/todoExample': typeof TodoExampleIndexLazyRoute
 }
 export interface FileRoutesById {
@@ -77,6 +92,7 @@ export interface FileRoutesById {
   '/about': typeof AboutLazyRoute
   '/todoExample/$todoid': typeof TodoExampleTodoidRoute
   '/boardExample/': typeof BoardExampleIndexLazyRoute
+  '/boardExampleWithoutLibrary/': typeof BoardExampleWithoutLibraryIndexLazyRoute
   '/todoExample/': typeof TodoExampleIndexLazyRoute
 }
 export interface FileRouteTypes {
@@ -87,6 +103,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/todoExample/$todoid'
     | '/boardExample'
+    | '/boardExampleWithoutLibrary'
     | '/todoExample'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -95,6 +112,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/todoExample/$todoid'
     | '/boardExample'
+    | '/boardExampleWithoutLibrary'
     | '/todoExample'
   id:
     | '__root__'
@@ -103,6 +121,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/todoExample/$todoid'
     | '/boardExample/'
+    | '/boardExampleWithoutLibrary/'
     | '/todoExample/'
   fileRoutesById: FileRoutesById
 }
@@ -112,6 +131,7 @@ export interface RootRouteChildren {
   AboutLazyRoute: typeof AboutLazyRoute
   TodoExampleTodoidRoute: typeof TodoExampleTodoidRoute
   BoardExampleIndexLazyRoute: typeof BoardExampleIndexLazyRoute
+  BoardExampleWithoutLibraryIndexLazyRoute: typeof BoardExampleWithoutLibraryIndexLazyRoute
   TodoExampleIndexLazyRoute: typeof TodoExampleIndexLazyRoute
 }
 
@@ -145,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TodoExampleIndexLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/boardExampleWithoutLibrary/': {
+      id: '/boardExampleWithoutLibrary/'
+      path: '/boardExampleWithoutLibrary'
+      fullPath: '/boardExampleWithoutLibrary'
+      preLoaderRoute: typeof BoardExampleWithoutLibraryIndexLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/boardExample/': {
       id: '/boardExample/'
       path: '/boardExample'
@@ -168,6 +195,8 @@ const rootRouteChildren: RootRouteChildren = {
   AboutLazyRoute: AboutLazyRoute,
   TodoExampleTodoidRoute: TodoExampleTodoidRoute,
   BoardExampleIndexLazyRoute: BoardExampleIndexLazyRoute,
+  BoardExampleWithoutLibraryIndexLazyRoute:
+    BoardExampleWithoutLibraryIndexLazyRoute,
   TodoExampleIndexLazyRoute: TodoExampleIndexLazyRoute,
 }
 export const routeTree = rootRouteImport

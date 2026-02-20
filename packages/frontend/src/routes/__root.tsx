@@ -9,6 +9,7 @@ export const Route = createRootRoute({
         <Link to="/aboutNotLazy">AboutNotLazy</Link>
         <Link to="/todoExample">ToDo</Link>
         <Link to="/boardExample">Board</Link>
+        <Link to="/boardExampleWithoutLibrary">BoardNative</Link>
       </header>
       <hr className="my-4" />
       <Outlet />

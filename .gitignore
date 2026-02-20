@@ -83,3 +83,10 @@ tsconfig.tsbuildinfo
 
 .vscode
 **/.tanstack
+
+# Project description
+PROJECT_DESCRIPTION.md
+# Local AI assistant config
+AGENTS.md
+.windsurfrules
+skills/

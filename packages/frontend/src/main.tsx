@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './styles.css';
 import { createRouter, RouterProvider } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import { Provider } from 'react-redux';
 import { routeTree } from './routeTree.gen';
+import { store } from './store';
 
 const router = createRouter({ routeTree });
 
@@ -15,7 +17,9 @@ if (!rootElement) {
 
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
-    <TanStackRouterDevtools router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+      <TanStackRouterDevtools router={router} />
+    </Provider>
   </React.StrictMode>,
 );
