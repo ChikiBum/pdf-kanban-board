@@ -3,6 +3,7 @@ import express from 'express';
 import type { Request, Response } from 'express-serve-static-core';
 import 'dotenv/config';
 import errorHandler from './middleware/errorHandler.middleware';
+import boardRouter from './modules/board/board.routes';
 import documentRouter from './modules/document/document.routes';
 
 const app = express();
@@ -17,22 +18,10 @@ app.use(
 );
 
 app.use('/api/documents', documentRouter);
+app.use('/api/board', boardRouter);
 
 app.get('/', (_req: Request, res: Response) => {
   res.send('Hello from PDF Kanban Board Backend!');
-});
-
-app.get('/api/test-data', (_req: Request, res: Response) => {
-  const mockData = {
-    message: 'Ці дані прийшли з бекенду!',
-    items: [
-      { id: 1, name: 'Завдання 1', status: 'В процесі' },
-      { id: 2, name: 'Завдання 2', status: 'Виконано' },
-      { id: 3, name: 'Завдання 3', status: 'Очікує' },
-    ],
-    timestamp: new Date().toISOString(),
-  };
-  res.json(mockData);
 });
 
 app.all('*', (_req: Request, res: Response) => {

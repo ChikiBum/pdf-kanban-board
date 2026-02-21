@@ -16,32 +16,7 @@ type BoardWithoutLibraryState = {
 };
 
 const initialState: BoardWithoutLibraryState = {
-  tasks: [
-    {
-      id: '1',
-      title: 'Collect Documents',
-      description: 'Get all PDF files from stakeholders',
-      status: 'TODO',
-    },
-    {
-      id: '2',
-      title: 'Review Requirements',
-      description: 'Validate naming and metadata rules',
-      status: 'TODO',
-    },
-    {
-      id: '3',
-      title: 'Upload to Board',
-      description: 'Send files to backend and map to cards',
-      status: 'IN_PROGRESS',
-    },
-    {
-      id: '4',
-      title: 'Approve Package',
-      description: 'Mark ready for signature step',
-      status: 'DONE',
-    },
-  ],
+  tasks: [],
   archivedTasks: [],
   selectedTaskIds: [],
 };
@@ -50,6 +25,14 @@ const boardWithoutLibrarySlice = createSlice({
   name: 'boardWithoutLibrary',
   initialState,
   reducers: {
+    setBoardData: (
+      state,
+      action: PayloadAction<{ tasks: BoardTask[]; archivedTasks: BoardTask[] }>,
+    ) => {
+      state.tasks = action.payload.tasks;
+      state.archivedTasks = action.payload.archivedTasks;
+      state.selectedTaskIds = [];
+    },
     addTask: (state, action: PayloadAction<{ title: string; description: string }>) => {
       const nextId = (
         state.tasks.reduce((max, task) => {
@@ -107,6 +90,7 @@ const boardWithoutLibrarySlice = createSlice({
 });
 
 export const {
+  setBoardData,
   addTask,
   moveTaskToColumn,
   toggleTaskSelection,
