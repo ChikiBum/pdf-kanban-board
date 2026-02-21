@@ -3,14 +3,18 @@ import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
-  addTask,
-  archiveSelectedTasks,
+  archiveBoardCards,
+  createBoardCard,
+  deleteArchivedBoardCard,
+  fetchBoardState,
+  moveBoardCard,
+  restoreArchivedBoardCard,
+} from '../../api/boardApi';
+import {
   type BoardTask,
   type ColumnId,
   clearTaskSelection,
-  moveTaskToColumn,
-  removeArchivedTask,
-  restoreArchivedTask,
+  setBoardData,
   toggleTaskSelection,
 } from '../../store/boardWithoutLibrary.slice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -35,17 +39,32 @@ function RouteComponent() {
   const tasks = useAppSelector((state) => state.boardWithoutLibrary.tasks);
   const archivedTasks = useAppSelector((state) => state.boardWithoutLibrary.archivedTasks);
   const selectedTaskIds = useAppSelector((state) => state.boardWithoutLibrary.selectedTaskIds);
+
   const [draggedTaskId, setDraggedTaskId] = useState<string | null>(null);
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const [newDescription, setNewDescription] = useState('');
+  const [syncError, setSyncError] = useState<string | null>(null);
 
   useEffect(() => {
     if (isArchiveOpen && archivedTasks.length === 0) {
       setIsArchiveOpen(false);
     }
   }, [isArchiveOpen, archivedTasks.length]);
+
+  useEffect(() => {
+    const loadBoard = async () => {
+      try {
+        const state = await fetchBoardState();
+        dispatch(setBoardData(state));
+      } catch (error) {
+        setSyncError(error instanceof Error ? error.message : 'Failed to load board');
+      }
+    };
+
+    void loadBoard();
+  }, [dispatch]);
 
   const grouped = useMemo(() => {
     return COLUMNS.reduce<Record<ColumnId, BoardTask[]>>(
@@ -61,26 +80,38 @@ function RouteComponent() {
     setDraggedTaskId(taskId);
   };
 
-  const handleDrop = (targetStatus: ColumnId) => {
+  const handleDrop = async (targetStatus: ColumnId) => {
     if (!draggedTaskId) return;
-    dispatch(moveTaskToColumn({ taskId: draggedTaskId, status: targetStatus }));
-    setDraggedTaskId(null);
+
+    try {
+      const state = await moveBoardCard({ cardId: draggedTaskId, status: targetStatus });
+      dispatch(setBoardData(state));
+      setSyncError(null);
+    } catch (error) {
+      setSyncError(error instanceof Error ? error.message : 'Failed to move card');
+    } finally {
+      setDraggedTaskId(null);
+    }
   };
 
-  const handleCreateTask = () => {
+  const handleCreateTask = async () => {
     const trimmedTitle = newTitle.trim();
     const trimmedDescription = newDescription.trim();
     if (!trimmedTitle) return;
 
-    dispatch(
-      addTask({
+    try {
+      const state = await createBoardCard({
         title: trimmedTitle,
         description: trimmedDescription,
-      }),
-    );
-    setNewTitle('');
-    setNewDescription('');
-    setIsAddFormOpen(false);
+      });
+      dispatch(setBoardData(state));
+      setNewTitle('');
+      setNewDescription('');
+      setIsAddFormOpen(false);
+      setSyncError(null);
+    } catch (error) {
+      setSyncError(error instanceof Error ? error.message : 'Failed to create card');
+    }
   };
 
   const handleCancelAdd = () => {
@@ -115,7 +146,17 @@ function RouteComponent() {
                 type="button"
                 size="sm"
                 variant="secondary"
-                onClick={() => dispatch(archiveSelectedTasks())}
+                onClick={async () => {
+                  try {
+                    const state = await archiveBoardCards(selectedTaskIds);
+                    dispatch(setBoardData(state));
+                    setSyncError(null);
+                  } catch (error) {
+                    setSyncError(
+                      error instanceof Error ? error.message : 'Failed to archive cards',
+                    );
+                  }
+                }}
                 className="h-8 bg-amber-600 text-xs uppercase tracking-wide text-white hover:bg-amber-700"
               >
                 Archive
@@ -153,6 +194,12 @@ function RouteComponent() {
         )}
       </div>
 
+      {syncError && (
+        <div className="mb-4 rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
+          {syncError}
+        </div>
+      )}
+
       {isArchiveOpen && (
         <div className="mb-4 rounded-xl border border-white/25 bg-black/20 p-4 backdrop-blur-sm">
           <div className="mb-3 flex items-center justify-between">
@@ -189,7 +236,17 @@ function RouteComponent() {
                       type="button"
                       size="sm"
                       variant="secondary"
-                      onClick={() => dispatch(restoreArchivedTask(task.id))}
+                      onClick={async () => {
+                        try {
+                          const state = await restoreArchivedBoardCard(task.id);
+                          dispatch(setBoardData(state));
+                          setSyncError(null);
+                        } catch (error) {
+                          setSyncError(
+                            error instanceof Error ? error.message : 'Failed to restore card',
+                          );
+                        }
+                      }}
                       className="h-8 text-xs uppercase tracking-wide"
                     >
                       Restore
@@ -198,7 +255,19 @@ function RouteComponent() {
                       type="button"
                       size="sm"
                       variant="destructive"
-                      onClick={() => dispatch(removeArchivedTask(task.id))}
+                      onClick={async () => {
+                        try {
+                          const state = await deleteArchivedBoardCard(task.id);
+                          dispatch(setBoardData(state));
+                          setSyncError(null);
+                        } catch (error) {
+                          setSyncError(
+                            error instanceof Error
+                              ? error.message
+                              : 'Failed to delete archived card',
+                          );
+                        }
+                      }}
                       className="h-8 text-xs uppercase tracking-wide"
                     >
                       Delete
@@ -246,7 +315,7 @@ function RouteComponent() {
             <Button
               type="button"
               size="sm"
-              onClick={handleCreateTask}
+              onClick={() => void handleCreateTask()}
               className="h-8 bg-emerald-500 text-xs font-semibold uppercase tracking-wide text-white hover:bg-emerald-600"
               disabled={!newTitle.trim()}
             >
@@ -271,7 +340,7 @@ function RouteComponent() {
           <section
             key={column.id}
             onDragOver={(e) => e.preventDefault()}
-            onDrop={() => handleDrop(column.id)}
+            onDrop={() => void handleDrop(column.id)}
             className="flex min-h-[420px] flex-col rounded-xl border border-white/25 bg-black/20 p-3 backdrop-blur-sm"
           >
             <header className="mb-3 flex items-center justify-between px-1 text-white">

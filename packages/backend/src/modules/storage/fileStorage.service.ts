@@ -20,7 +20,6 @@ const storeFile = async (
   const orgDir = options?.orgId ? `org_${options.orgId}` : 'shared';
 
   const fullUploadDir = path.join(uploadDir, orgDir);
-  console.log('uploadDir', fullUploadDir);
 
   await ensureDirectoryExists(fullUploadDir);
   // await ensureDirectoryExists(config.tempDir);
