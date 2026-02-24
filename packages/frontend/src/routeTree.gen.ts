@@ -15,18 +15,12 @@ import { Route as AboutNotLazyRouteImport } from './routes/aboutNotLazy'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TodoExampleTodoidRouteImport } from './routes/todoExample/$todoid'
 
-const AboutLazyRouteImport = createFileRoute('/about')()
 const TodoExampleIndexLazyRouteImport = createFileRoute('/todoExample/')()
 const BoardExampleWithoutLibraryIndexLazyRouteImport = createFileRoute(
   '/boardExampleWithoutLibrary/',
 )()
 const BoardExampleIndexLazyRouteImport = createFileRoute('/boardExample/')()
 
-const AboutLazyRoute = AboutLazyRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/about.lazy').then((d) => d.Route))
 const AboutNotLazyRoute = AboutNotLazyRouteImport.update({
   id: '/aboutNotLazy',
   path: '/aboutNotLazy',
@@ -70,7 +64,6 @@ const TodoExampleTodoidRoute = TodoExampleTodoidRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/aboutNotLazy': typeof AboutNotLazyRoute
-  '/about': typeof AboutLazyRoute
   '/todoExample/$todoid': typeof TodoExampleTodoidRoute
   '/boardExample': typeof BoardExampleIndexLazyRoute
   '/boardExampleWithoutLibrary': typeof BoardExampleWithoutLibraryIndexLazyRoute
@@ -79,7 +72,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/aboutNotLazy': typeof AboutNotLazyRoute
-  '/about': typeof AboutLazyRoute
   '/todoExample/$todoid': typeof TodoExampleTodoidRoute
   '/boardExample': typeof BoardExampleIndexLazyRoute
   '/boardExampleWithoutLibrary': typeof BoardExampleWithoutLibraryIndexLazyRoute
@@ -89,7 +81,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/aboutNotLazy': typeof AboutNotLazyRoute
-  '/about': typeof AboutLazyRoute
   '/todoExample/$todoid': typeof TodoExampleTodoidRoute
   '/boardExample/': typeof BoardExampleIndexLazyRoute
   '/boardExampleWithoutLibrary/': typeof BoardExampleWithoutLibraryIndexLazyRoute
@@ -100,7 +91,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/aboutNotLazy'
-    | '/about'
     | '/todoExample/$todoid'
     | '/boardExample'
     | '/boardExampleWithoutLibrary'
@@ -109,7 +99,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/aboutNotLazy'
-    | '/about'
     | '/todoExample/$todoid'
     | '/boardExample'
     | '/boardExampleWithoutLibrary'
@@ -118,7 +107,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/aboutNotLazy'
-    | '/about'
     | '/todoExample/$todoid'
     | '/boardExample/'
     | '/boardExampleWithoutLibrary/'
@@ -128,7 +116,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutNotLazyRoute: typeof AboutNotLazyRoute
-  AboutLazyRoute: typeof AboutLazyRoute
   TodoExampleTodoidRoute: typeof TodoExampleTodoidRoute
   BoardExampleIndexLazyRoute: typeof BoardExampleIndexLazyRoute
   BoardExampleWithoutLibraryIndexLazyRoute: typeof BoardExampleWithoutLibraryIndexLazyRoute
@@ -137,13 +124,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutLazyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/aboutNotLazy': {
       id: '/aboutNotLazy'
       path: '/aboutNotLazy'
@@ -192,7 +172,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutNotLazyRoute: AboutNotLazyRoute,
-  AboutLazyRoute: AboutLazyRoute,
   TodoExampleTodoidRoute: TodoExampleTodoidRoute,
   BoardExampleIndexLazyRoute: BoardExampleIndexLazyRoute,
   BoardExampleWithoutLibraryIndexLazyRoute:

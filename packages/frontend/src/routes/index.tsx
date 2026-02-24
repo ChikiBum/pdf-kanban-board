@@ -8,8 +8,6 @@ function Index() {
   return (
     <>
       <div>Hello Index "/"!</div>
-      <Link to="/about">About</Link>
-      <br />
       <Link to="/aboutNotLazy">AboutNotLazy</Link>
     </>
   );
